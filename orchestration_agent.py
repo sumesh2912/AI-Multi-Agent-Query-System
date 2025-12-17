@@ -46,9 +46,7 @@ You have access to THREE specialized agents:
 
 CLASSIFICATION RULES:
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Rule 1: Classify as LOCAL if query involves:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✓ Viewing/listing existing database records
 ✓ Counting/statistics on existing data
 ✓ Adding a SPECIFIC named person (not a search)
@@ -71,9 +69,7 @@ Examples:
 ✓ "Get all people from Pune"
 ✓ "Count people by location"
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Rule 2: Classify as EXTERNAL if query involves:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✓ Searching for candidates from external sources
 ✓ Finding people NOT yet in database
 ✓ Looking up job candidates online
@@ -90,9 +86,7 @@ Examples:
 ✓ "Discover cloud architects in Singapore"
 ✓ "Find blockchain developers"
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Rule 3: Classify as HYBRID if query involves:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✓ Searching external sources AND saving to database
 ✓ Finding candidates AND adding them to our team
 ✓ Explicitly mentions both searching and database operations
@@ -109,7 +103,6 @@ Examples:
 ✓ "Find DevOps engineers and save the best ones to database"
 ✓ "Get blockchain developers and add top 5"
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 CURRENT USER QUERY:
 "{query}"
@@ -204,7 +197,7 @@ def route_by_intent(state: GraphState) -> str:
     
     route = routing_map.get(intent, "error_handler")
     
-    print(f"ORCHESTRATOR 🔀 Routing Decision: {intent} → {route}")
+    print(f"ORCHESTRATOR Routing Decision: {intent} → {route}")
     
     return route
 
@@ -291,11 +284,10 @@ def build_graph():
     print("ORCHESTRATOR   • Agent 2: EXTERNAL_SEARCH_AGENT (Candidate search)")
     print("ORCHESTRATOR   • Agent 3: HYBRID_AGENT (Search + Insert)")
     print("ORCHESTRATOR   • Error Handler: Graceful error management")
-    print("ORCHESTRATOR " + "="*60 + "\n")
     
     # Compile and return the graph
     compiled_graph = workflow.compile()
     print("ORCHESTRATOR Graph compiled and ready for execution!\n")
-    
 
     return compiled_graph
+
