@@ -2,7 +2,6 @@ import streamlit as st
 import requests
 import json
 
-# ---------------- CONFIG ----------------
 API_URL = "http://127.0.0.1:8000/query"
 
 st.set_page_config(
@@ -11,7 +10,6 @@ st.set_page_config(
     layout="centered"
 )
 
-# ---------------- HEADER ----------------
 st.markdown(
     """
     <h1 style='text-align: center;'>🤖 AI Multi-Agent Query System</h1>
@@ -24,7 +22,6 @@ st.markdown(
 
 st.divider()
 
-# ---------------- INPUT ----------------
 st.subheader("Enter your query")
 
 query = st.text_input(
@@ -34,22 +31,6 @@ query = st.text_input(
 
 submit = st.button("Run Query", use_container_width=True)
 
-# ---------------- HELP ----------------
-# with st.expander("💡 Example Queries"):
-#     st.markdown("""
-#     **Local DB**
-#     - Show me all people in the database
-#     - How many engineers are in Mumbai?
-
-#     **External Search**
-#     - Find machine learning engineers in San Francisco
-#     - Search for AI researchers in Europe
-
-#     **Hybrid**
-#     - Find ML engineers in SF and add top 5 to database
-#     """)
-
-# ---------------- PROCESS ----------------
 if submit:
     if not query.strip():
         st.warning("Please enter a query.")
@@ -68,7 +49,7 @@ if submit:
                 else:
                     data = response.json()
 
-                    # ---------------- RESULT HEADER ----------------
+          
                     st.success("Query processed successfully")
 
                     col1, col2 = st.columns(2)
@@ -80,7 +61,6 @@ if submit:
 
                     st.divider()
 
-                    # ---------------- RESPONSE DISPLAY ----------------
                     final_response = data.get("response")
 
                     if not final_response:
@@ -88,12 +68,10 @@ if submit:
                     else:
                         agent = final_response.get("agent")
 
-                        # ----- LOCAL DB -----
                         if agent == "LOCAL_DB":
                             st.subheader("Database Result")
                             st.write(final_response.get("message"))
 
-                        # ----- EXTERNAL SEARCH -----
                         elif agent == "EXTERNAL_SEARCH":
                             st.subheader("External Candidates")
 
@@ -107,7 +85,6 @@ if submit:
                                     st.markdown(f"**Location:** {r['location']}")
                                     st.markdown("**Source:** External")
 
-                        # ----- HYBRID -----
                         elif agent == "HYBRID":
                             st.subheader("Hybrid Operation Summary")
 
@@ -130,12 +107,10 @@ if submit:
                             else:
                                 st.info("No new candidates inserted.")
 
-                        # ----- ERROR -----
                         else:
                             st.error("❌ Error from system")
                             st.json(final_response)
 
-                    # ---------------- RAW JSON ----------------
                     with st.expander("View Raw JSON Response"):
                         st.json(data)
 
@@ -144,8 +119,8 @@ if submit:
             except Exception as e:
                 st.error(f"Unexpected error: {str(e)}")
 
-# ---------------- FOOTER ----------------
 st.divider()
 # st.caption(
 #     "Built wusing FastAPI, LangGraph & Ollama | Local AI System"
 # )
+
