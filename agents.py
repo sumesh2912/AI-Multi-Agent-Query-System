@@ -119,7 +119,7 @@ def local_db_agent(state: Dict[str, Any]) -> Dict[str, Any]:
             return {
                 "final_response": {
                     "agent": "LOCAL_DB",
-                    "message": "✅ Record inserted successfully",
+                    "message": "Record inserted successfully",
                     "data": {
                         "name": name,
                         "role": role,
@@ -145,18 +145,7 @@ def local_db_agent(state: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def external_search_agent(state: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Agent 2: EXTERNAL INFORMATION RETRIEVAL
-    Uses LLM to generate realistic candidate data based on the search query
-    Simulates searching external job boards, LinkedIn, company databases, etc.
-    
-    Examples:
-    - "Find machine learning engineers in San Francisco"
-    - "Search for AI researchers in Europe"
-    - "Look up data scientists in Boston"
-    """
     query = state["query"]
-    
     try:
         # Prompt LLM to generate realistic external search results
         search_prompt = f"""You are an external recruitment database API that searches across multiple platforms (LinkedIn, Indeed, Glassdoor, company databases).
@@ -191,11 +180,9 @@ Generate candidates now:"""
 
         print(f"[EXTERNAL_SEARCH] Searching for: {query}")
         
-        # Get LLM response
         response = llm.invoke(search_prompt)
         response_text = response.content.strip()
         
-        # Extract JSON from response (handle markdown code blocks)
         json_match = re.search(r'\[[\s\S]*\]', response_text)
         if json_match:
             json_str = json_match.group(0)
@@ -204,7 +191,6 @@ Generate candidates now:"""
             # Fallback if JSON parsing fails
             results = []
         
-        # Validate and clean results
         validated_results = []
         for candidate in results:
             if all(key in candidate for key in ["name", "role", "location"]):
@@ -228,7 +214,6 @@ Generate candidates now:"""
         error_msg = f"External search failed: {str(e)}"
         print(f"[EXTERNAL_SEARCH] {error_msg}")
         
-        # Fallback to basic results
         return {
             "external_result": [],
             "final_response": {
@@ -243,12 +228,10 @@ Generate candidates now:"""
 
 
 def hybrid_agent(state: Dict[str, Any]) -> Dict[str, Any]:
-    
     query = state["query"]
     
     try:
         print(f"HYBRID Starting hybrid operation for: {query}")
-        print("===== EXTERNAL SEARCH =====")
         
         external_search_prompt = f"""You are a recruitment search engine that searches multiple platforms.
 
@@ -274,7 +257,6 @@ Generate candidates:"""
         external_response = llm.invoke(external_search_prompt)
         external_text = external_response.content.strip()
         
-        # Parse JSON response
         json_match = re.search(r'\[[\s\S]*\]', external_text)
         if json_match:
             external_results = json.loads(json_match.group(0))
@@ -439,4 +421,5 @@ Respond with ONLY the SQL query."""
                 "error": error_msg
             },
             "error": str(e)
+
         }
