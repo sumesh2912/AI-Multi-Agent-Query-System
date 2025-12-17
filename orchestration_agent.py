@@ -5,9 +5,6 @@ import os
 from constants import GROQ_API_KEY, POSTGRES_URI
 from agents import local_db_agent, external_search_agent, hybrid_agent
 
-
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-
 llm = ChatGroq(
     model="llama-3.1-8b-instant",
     api_key=GROQ_API_KEY
@@ -300,4 +297,5 @@ def build_graph():
     compiled_graph = workflow.compile()
     print("ORCHESTRATOR Graph compiled and ready for execution!\n")
     
+
     return compiled_graph
